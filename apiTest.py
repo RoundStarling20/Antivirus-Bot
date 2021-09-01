@@ -18,22 +18,20 @@ def checkLink(url):
                 y = (analysis_resp.data["attributes"]["last_analysis_results"][f"{name}"]["result"])
                 x.append(f"{y}")
 
-            count = 0
             numberOfClean = 0
             numberOfMalicious = 0
             numberOfSuspicious = 0
             numberOfPhishing = 0
             
-            for word in x:
-                if x[count] == 'clean':
+            for i in range(len(x)):
+                if x[i] == 'clean':
                     numberOfClean += 1
-                elif x[count] == 'malicious':
+                elif x[i] == 'malicious':
                     numberOfMalicious += 1
-                elif x[count] == 'suspicious':
+                elif x[i] == 'suspicious':
                     numberOfSuspicious += 1
-                elif x[count] == 'phishing':
+                elif x[i] == 'phishing':
                     numberOfPhishing += 1
-                count += 1
 
             #print(f"Number of clean reports: {numberOfClean}")
             #print(f"Number of malicious reports: {numberOfMalicious}")
