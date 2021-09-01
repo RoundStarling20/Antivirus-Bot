@@ -26,6 +26,3 @@ def save_db(db, filePath):
 def getPrefix(client, message):
     prefixes = get_db(filePath=directoryPath["serverPrefixdb"])
     return prefixes[str(message.guild.id)]
-
-def addTwo(input):
-    return input + 2
