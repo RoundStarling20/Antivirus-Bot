@@ -35,5 +35,3 @@ for filename in os.listdir("./cogs"):
 
 with open("token.txt", 'r', encoding="utf-8") as fp:
     client.run(f"{fp.read()}")
-
-#rotate images
