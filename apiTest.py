@@ -8,7 +8,7 @@ def checkLink(url):
 
     with Virustotal(API_KEY=APIKey, API_VERSION="v3") as vtotal:
             # Send URL to VirusTotal for analysis
-            resp = vtotal.request("urls", data={"url": url}, method="POST")
+            #resp = vtotal.request("urls", data={"url": url}, method="POST")
             # URL safe encode URL in base64 format
             url_id = urlsafe_b64encode(url.encode()).decode().strip("=")
             # Obtain the analysis results for the URL using the url_id
