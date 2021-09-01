@@ -14,10 +14,12 @@ class antiVirus(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if validators.url(message.content):
-            reports = apiTest.checkLink(message.content)
-            if int(reports[1]) + int(reports[3]) >= numberOfEvil:
-                await message.guild.ban(message.author, reason=f"Mallicious: {reports[1]} Phishing: {reports[3]}")
+        buffer = message.content.split()
+        for i in range(len(buffer)):
+            if validators.url(buffer[i]):
+                reports = apiTest.checkLink(buffer[i])
+                if int(reports[1]) + int(reports[3]) >= numberOfEvil:
+                    await message.guild.ban(message.author, reason=f"Mallicious: {reports[1]} Phishing: {reports[3]}")
 
 
 def setup(client):
