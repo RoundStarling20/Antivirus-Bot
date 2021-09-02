@@ -21,13 +21,16 @@ class antiVirus(commands.Cog):
         inChecked = 0
         for i in range(len(buffer)):
             if validators.url(buffer[i]):
+                print(buffer[i])
                 #Check each dictionary for similar link
                 for x in range(len(db["verified"])):
                     if db["verified"][x] in buffer[i]:
                         inVerified = 1
+                        print("In Verified")
                 for x in range(len(db["checkedURLS"])):
                     if db["checkedURLS"][x] in buffer[i]:
                         inChecked = 1
+                        print("In Checked")
                 if  not(inVerified or inChecked):
                     reports = await apiVT.checkLink(buffer[i])
                     if reports["malicious"] >= numberOfEvil:
@@ -39,6 +42,7 @@ class antiVirus(commands.Cog):
                     else:
                         db["checkedURLS"].append(buffer[i])
                         custom.save_db(db, filePath=directoryPath["urlDB"])
+                        print("Added to the Checked URL's")
 
 
 def setup(client):
