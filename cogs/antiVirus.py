@@ -1,4 +1,4 @@
-import apiTest
+import apiVT
 import custom
 import discord
 import validators
@@ -28,14 +28,12 @@ class antiVirus(commands.Cog):
                 for x in range(len(db["checkedURLS"])):
                     if db["checkedURLS"][x] in buffer[i]:
                         inChecked = 1
-
                 if  not(inVerified or inChecked):
-                    print("in thing")
-                    reports = apiTest.checkLink(buffer[i])
-                    if int(reports[1]) + int(reports[3]) >= numberOfEvil:
+                    reports = await apiVT.checkLink(buffer[i])
+                    if reports["malicious"] >= numberOfEvil:
                         await message.author.edit(roles=[])
-                        role = discord.utils.get(message.guild.roles, name="muted")
-                        await message.author.add_roles(role, reason=f"Mallicious: {reports[1]} Phishing: {reports[3]}")
+                        role = discord.utils.get(message.guild.roles, name="Muted")
+                        await message.author.add_roles(role, reason= "Mallicious: " + str(reports["malicious"]))
                         await message.delete()
                         return
                     else:
