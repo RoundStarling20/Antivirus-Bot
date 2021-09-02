@@ -4,7 +4,8 @@ import discord
 from discord.ext import commands
 
 directoryPath = {
-  "serverPrefixdb": "cogs\Databases\prefixes.json"
+  "serverPrefixdb": "cogs\Databases\prefixes.json",
+  "urlDB": "cogs\Databases\listOfURLS.json"
 }
 
 
