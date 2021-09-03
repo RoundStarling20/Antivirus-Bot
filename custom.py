@@ -4,8 +4,13 @@ import discord
 from discord.ext import commands
 
 directoryPath = {
-  "serverPrefixdb": "cogs\Databases\prefixes.json",
-  "urlDB": "cogs\Databases\listOfURLS.json"
+  "serverPrefixdb": "cogs/Databases/prefixes.json",
+  "urlDB": "cogs/Databases/listOfURLS.json"
+}
+
+emojiList = {
+    "confirmed": "<a:confirmed:881422225134223372>",
+    "failed": "<a:failed:881422274467598366>"
 }
 
 

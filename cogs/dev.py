@@ -1,7 +1,8 @@
 import custom
 import discord
 from discord.ext import commands
-
+from custom import directoryPath
+from custom import emojiList
 
 class dev(commands.Cog):
     def __init__(self, client):
@@ -19,12 +20,18 @@ class dev(commands.Cog):
     async def ping(self, ctx):
         await ctx.send(f'Pong! {round(self.client.latency * 1000)}ms')
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.author.id == 882472664860594327:
-            print("AntiVirusBot responded")
-        else:
-            print(f"{message.author} said {message.content}")
+    @commands.command()
+    @commands.check(custom.isItme)
+    async def dump(self, ctx, dbName):
+        await ctx.send(file=discord.File(f'cogs/Databases/{dbName}.json'))
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def changePrefix(self, ctx, prefix):
+        prefixes = custom.get_db(filePath=directoryPath["serverPrefixdb"])
+        prefixes[str(ctx.guild.id)] = prefix
+        custom.save_db(db=prefixes, filePath=directoryPath["serverPrefixdb"])
+        await ctx.message.add_reaction(emojiList["confirmed"])
 
     @commands.command()
     @commands.check(custom.isItme)
