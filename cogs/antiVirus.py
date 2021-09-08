@@ -54,12 +54,6 @@ class antiVirus(commands.Cog):
         await custom.graphDates()
         await ctx.send(file=discord.File(directoryPath["apiUse"]))
 
-    @commands.command()
-    @commands.check(custom.isItme)
-    async def test(self, ctx):
-        channel = ctx.guild.get_channel(854918297505759283)
-        await channel.send('hello')
-
 
 def setup(client):
     client.add_cog(antiVirus(client))
