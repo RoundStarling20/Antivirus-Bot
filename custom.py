@@ -1,11 +1,18 @@
+import datetime as dt
 import json
+from collections import OrderedDict
 
 import discord
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 from discord.ext import commands
+
+import apiVT
 
 directoryPath = {
   "serverPrefixdb": "cogs/Databases/prefixes.json",
-  "urlDB": "cogs/Databases/listOfURLS.json"
+  "urlDB": "cogs/Databases/listOfURLS.json",
+  "apiUse":"/home/pi/Documents/AVBot/Images/apiCalls.png"
 }
 
 emojiList = {
@@ -32,3 +39,34 @@ def save_db(db, filePath):
 def getPrefix(client, message):
     prefixes = get_db(filePath=directoryPath["serverPrefixdb"])
     return prefixes[str(message.guild.id)]
+
+async def getDaily():
+    x = {}
+    data = await apiVT.getUseage()
+
+    for value in data['data']['daily']:
+                if 'url' in str(data['data']['daily'][value]):
+                    x[value] = data['data']['daily'][value]['/api/v3/(url_submission)'] + data['data']['daily'][f'{value}']['/api/v3/(urls)']
+
+    x = OrderedDict(sorted(x.items(), key=lambda t: t[0]))
+    
+    return(x)
+
+async def graphDates():
+    dates = []
+    apiUses = []
+    data = await getDaily()
+    for values in data:
+        dates.append(values)
+        apiUses.append(data[values])
+    dates = [dt.datetime.strptime(d,'%Y-%m-%d').date() for d in dates]
+    
+    
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+    plt.plot(dates,apiUses,'#00a3b6')
+    plt.gcf().autofmt_xdate()
+    plt.ylabel('Number of API Calls')
+    plt.xlabel('Date')
+    plt.grid(True)
+    plt.savefig(directoryPath["apiUse"])

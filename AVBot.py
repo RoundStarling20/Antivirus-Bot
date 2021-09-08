@@ -27,7 +27,6 @@ async def on_command_error(ctx, error):
     if isinstance(error, discord.ext.commands.CommandNotFound):
             await ctx.send("This is not a command.")
 
-
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f'cogs.{filename[:-3]}')

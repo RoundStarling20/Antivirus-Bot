@@ -23,6 +23,7 @@ class antiVirus(commands.Cog):
             if validators.url(buffer[i]):
                 print(buffer[i])
                 #Check each dictionary for similar link
+                #Cant return because the entire message needs to be checked for multiple links
                 for x in range(len(db["verified"])):
                     if db["verified"][x] in buffer[i]:
                         inVerified = 1
@@ -43,6 +44,11 @@ class antiVirus(commands.Cog):
                         db["checkedURLS"].append(buffer[i])
                         custom.save_db(db, filePath=directoryPath["urlDB"])
                         print("Added to the Checked URL's")
+    @commands.command()
+    @commands.check(custom.isItme)
+    async def apiUse(self, ctx):
+        await custom.graphDates()
+        await ctx.send(file=discord.File(directoryPath["apiUse"]))
 
 
 def setup(client):
