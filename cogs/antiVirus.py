@@ -39,7 +39,11 @@ class antiVirus(commands.Cog):
                         role = discord.utils.get(message.guild.roles, name="Muted")
                         await message.author.add_roles(role, reason= "Mallicious: " + str(reports["malicious"]))
                         await message.delete()
+                        
+                        channel = message.guild.get_channel("channelID to send message to")
+                        await channel.send(f"{message.author.mention} has sent a malicious link with {str(reports['malicious'])} flags and they have been muted.")
                         return
+                    
                     else:
                         db["checkedURLS"].append(buffer[i])
                         custom.save_db(db, filePath=directoryPath["urlDB"])
@@ -49,6 +53,12 @@ class antiVirus(commands.Cog):
     async def apiUse(self, ctx):
         await custom.graphDates()
         await ctx.send(file=discord.File(directoryPath["apiUse"]))
+
+    @commands.command()
+    @commands.check(custom.isItme)
+    async def test(self, ctx):
+        channel = ctx.guild.get_channel(854918297505759283)
+        await channel.send('hello')
 
 
 def setup(client):
