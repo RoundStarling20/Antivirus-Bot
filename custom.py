@@ -1,5 +1,6 @@
 import datetime as dt
 import json
+import os
 from collections import OrderedDict
 
 import discord
@@ -50,9 +51,10 @@ async def getDaily():
 
     x = OrderedDict(sorted(x.items(), key=lambda t: t[0]))
     
-    return(x)
+    return x
 
 async def graphDates():
+    os.remove(directoryPath["apiUse"])
     dates = []
     apiUses = []
     data = await getDaily()
@@ -61,7 +63,7 @@ async def graphDates():
         apiUses.append(data[values])
     dates = [dt.datetime.strptime(d,'%Y-%m-%d').date() for d in dates]
     
-    
+    #Begin Formatting plot
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
     plt.gca().xaxis.set_major_locator(mdates.DayLocator())
     plt.plot(dates,apiUses,'#00a3b6')

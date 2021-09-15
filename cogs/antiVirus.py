@@ -35,13 +35,13 @@ class antiVirus(commands.Cog):
                 if  not(inVerified or inChecked):
                     reports = await apiVT.checkLink(buffer[i])
                     if reports["malicious"] >= numberOfEvil:
+                        channel = message.guild.get_channel('BotAlertsChannel')
+                        await channel.send(f"{message.author.mention} has sent a malicious link with {str(reports['malicious'])} flags and they have been muted.")
+                        
                         await message.author.edit(roles=[])
                         role = discord.utils.get(message.guild.roles, name="Muted")
                         await message.author.add_roles(role, reason= "Mallicious: " + str(reports["malicious"]))
                         await message.delete()
-                        
-                        channel = message.guild.get_channel("channelID to send message to")
-                        await channel.send(f"{message.author.mention} has sent a malicious link with {str(reports['malicious'])} flags and they have been muted.")
                         return
                     
                     else:
