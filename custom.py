@@ -13,6 +13,7 @@ import apiVT
 directoryPath = {
   "serverPrefixdb": "cogs/Databases/prefixes.json",
   "urlDB": "cogs/Databases/listOfURLS.json",
+  "badURLDB": "cogs/Databases/badURL.json",
   "apiUse":"/home/pi/Documents/AVBot/Images/apiCalls.png"
 }
 
@@ -64,6 +65,7 @@ async def graphDates():
     dates = [dt.datetime.strptime(d,'%Y-%m-%d').date() for d in dates]
     
     #Begin Formatting plot
+    plt.clf()
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
     plt.gca().xaxis.set_major_locator(mdates.DayLocator())
     plt.plot(dates,apiUses,'#00a3b6')

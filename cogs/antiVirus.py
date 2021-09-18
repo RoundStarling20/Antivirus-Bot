@@ -16,11 +16,30 @@ class antiVirus(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         db = custom.get_db(filePath=directoryPath["urlDB"])
+        badDB = custom.get_db(filePath=directoryPath["badURLDB"])
         buffer = message.content.split()
         inVerified = 0
         inChecked = 0
         for i in range(len(buffer)):
             if validators.url(buffer[i]):
+
+                #checks to see if link is in databse of malicious urls
+                for x in range(len(badDB["malicious"])):
+                    if badDB["malicious"][x] in buffer[i]:
+                        try:
+                            role = discord.utils.get(message.guild.roles, name="Muted")
+                            if role not in message.author.roles:
+                                await message.author.edit(roles=[])
+                                role = discord.utils.get(message.guild.roles, name="Muted")
+                                await message.author.add_roles(role, reason= "Sent a link in the malicious database ")
+                        except:
+                            print("Link in database error")
+                        finally:
+                            await message.delete()
+                            print("This link is in the malicious database")
+                        return
+
+
                 print(buffer[i])
                 #Check each dictionary for similar link
                 #Cant return because the entire message needs to be checked for multiple links
@@ -32,16 +51,25 @@ class antiVirus(commands.Cog):
                     if db["checkedURLS"][x] in buffer[i]:
                         inChecked = 1
                         print("In Checked")
+
+
                 if  not(inVerified or inChecked):
                     reports = await apiVT.checkLink(buffer[i])
                     if reports["malicious"] >= numberOfEvil:
-                        channel = message.guild.get_channel('BotAlertsChannel')
-                        await channel.send(f"{message.author.mention} has sent a malicious link with {str(reports['malicious'])} flags and they have been muted.")
-                        
-                        await message.author.edit(roles=[])
-                        role = discord.utils.get(message.guild.roles, name="Muted")
-                        await message.author.add_roles(role, reason= "Mallicious: " + str(reports["malicious"]))
-                        await message.delete()
+                        try:
+                            await message.author.edit(roles=[])
+                            role = discord.utils.get(message.guild.roles, name="Muted")
+                            await message.author.add_roles(role, reason= "Mallicious: " + str(reports["malicious"]))
+
+                        except:
+                            print("The user was either kicked or the message was deleted")
+                            
+                        finally:
+                            await message.delete()
+                            channel = message.guild.get_channel("Alert Channel")
+                            await channel.send(f"{message.author.mention} has sent a malicious link with {str(reports['malicious'])} flags and they have been muted.")
+                            badDB["malicious"].append(buffer[i])
+                            custom.save_db(badDB, filePath=directoryPath["badURLDB"])
                         return
                     
                     else:
