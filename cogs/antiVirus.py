@@ -16,9 +16,7 @@ class antiVirus(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         #doesnt delete bot messages
-        if message.author.bot:
-            return
-        else:
+        if not(message.author.bot):
             db = custom.get_db(filePath=directoryPath["urlDB"])
             badDB = custom.get_db(filePath=directoryPath["badURLDB"])
             buffer = message.content.split()
@@ -70,7 +68,7 @@ class antiVirus(commands.Cog):
                                 
                             finally:
                                 await message.delete()
-                                channel = message.guild.get_channel("alert channel id")
+                                channel = message.guild.get_channel(854918297505759283)
                                 await channel.send(f"{message.author.mention} has sent a malicious link with {str(reports['malicious'])} flags and they have been muted.")
                                 badDB["malicious"].append(buffer[i])
                                 custom.save_db(badDB, filePath=directoryPath["badURLDB"])
