@@ -55,7 +55,6 @@ async def getDaily():
     return x
 
 async def graphDates():
-    os.remove(directoryPath["apiUse"])
     dates = []
     apiUses = []
     data = await getDaily()
