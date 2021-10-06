@@ -29,10 +29,13 @@ class antiVirus(commands.Cog):
                     for x in range(len(badDB["malicious"])):
                         if badDB["malicious"][x] in buffer[i]:
                             try:
+                                #get user roles, check for muted role
                                 role = discord.utils.get(message.guild.roles, name="Muted")
                                 if role not in message.author.roles:
                                     channel = message.guild.get_channel(854918297505759283)
                                     await channel.send(f"{message.author.mention} has sent a link previously marked as mallicious and has been muted")
+
+                                    #remove roles, add muted
                                     await message.author.edit(roles=[])
                                     role = discord.utils.get(message.guild.roles, name="Muted")
                                     await message.author.add_roles(role, reason= "Sent a link in the malicious database ")
@@ -61,10 +64,13 @@ class antiVirus(commands.Cog):
                         reports = await apiVT.checkLink(buffer[i])
                         if reports["malicious"] >= numberOfEvil:
                             try:
+                                #checks to see if user has been muted
                                 role = discord.utils.get(message.guild.roles, name="Muted")
                                 if role not in message.author.roles:
                                     channel = message.guild.get_channel(854918297505759283)
                                     await channel.send(f"{message.author.mention} has sent a malicious link with {str(reports['malicious'])} flags and they have been muted.")
+
+                                    #removes roles, adds muted
                                     await message.author.edit(roles=[])
                                     role = discord.utils.get(message.guild.roles, name="Muted")
                                     await message.author.add_roles(role, reason= "Mallicious: " + str(reports["malicious"]))
