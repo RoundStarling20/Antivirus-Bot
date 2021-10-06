@@ -20,8 +20,8 @@ class antiVirus(commands.Cog):
             db = custom.get_db(filePath=directoryPath["urlDB"])
             badDB = custom.get_db(filePath=directoryPath["badURLDB"])
             buffer = message.content.split()
-            inVerified = 0
-            inChecked = 0
+            inVerified = False
+            inChecked = False
             for i in range(len(buffer)):
                 if validators.url(buffer[i]):
 
@@ -52,11 +52,11 @@ class antiVirus(commands.Cog):
                     #Cant return because the entire message needs to be checked for multiple links
                     for x in range(len(db["verified"])):
                         if db["verified"][x] in buffer[i]:
-                            inVerified = 1
+                            inVerified = True
                             print("In Verified")
                     for x in range(len(db["checkedURLS"])):
                         if db["checkedURLS"][x] in buffer[i]:
-                            inChecked = 1
+                            inChecked = True
                             print("In Checked")
 
 
