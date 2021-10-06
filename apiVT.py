@@ -11,7 +11,6 @@ async def checkLink(passed_url):
     await vtclient.close_async()
     return url.last_analysis_stats
 
-
 async def getUseage():
     with open("key.txt", 'r', encoding="utf-8") as fp:
         APIKey = (f"{fp.read()}")

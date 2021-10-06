@@ -65,6 +65,7 @@ async def graphDates():
     
     #Begin Formatting plot
     plt.clf()
+    plt.rcParams.update({'font.size': 5})
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
     plt.gca().xaxis.set_major_locator(mdates.DayLocator())
     plt.plot(dates,apiUses,'#00a3b6')
