@@ -59,19 +59,21 @@ class antiVirus(commands.Cog):
                         reports = await apiVT.checkLink(buffer[i])
                         if reports["malicious"] >= numberOfEvil:
                             try:
-                                await message.author.edit(roles=[])
                                 role = discord.utils.get(message.guild.roles, name="Muted")
-                                await message.author.add_roles(role, reason= "Mallicious: " + str(reports["malicious"]))
+                                if role not in message.author.roles:
+                                    await message.author.edit(roles=[])
+                                    role = discord.utils.get(message.guild.roles, name="Muted")
+                                    await message.author.add_roles(role, reason= "Mallicious: " + str(reports["malicious"]))
 
                             except:
                                 print("The user was either kicked or the message was deleted")
                                 
                             finally:
-                                await message.delete()
                                 channel = message.guild.get_channel(854918297505759283)
                                 await channel.send(f"{message.author.mention} has sent a malicious link with {str(reports['malicious'])} flags and they have been muted.")
                                 badDB["malicious"].append(buffer[i])
                                 custom.save_db(badDB, filePath=directoryPath["badURLDB"])
+                                await message.delete()
                             return
                         
                         else:
