@@ -54,10 +54,11 @@ class antiVirus(commands.Cog):
                         if db["verified"][x] in buffer[i]:
                             inVerified = True
                             print("In Verified")
-                    for x in range(len(db["checkedURLS"])):
-                        if db["checkedURLS"][x] in buffer[i]:
-                            inChecked = True
-                            print("In Checked")
+                    if not inVerified:
+                        for x in range(len(db["checkedURLS"])):
+                            if db["checkedURLS"][x] in buffer[i]:
+                                inChecked = True
+                                print("In Checked")
 
 
                     if  not(inVerified or inChecked):
@@ -76,7 +77,7 @@ class antiVirus(commands.Cog):
                                     await message.author.add_roles(role, reason= "Mallicious: " + str(reports["malicious"]))
 
                             except:
-                                print("The user was either kicked or the message was deleted")
+                                print("The user was either kicked or left the server")
                                 
                             finally:
                                 badDB["malicious"].append(buffer[i])
