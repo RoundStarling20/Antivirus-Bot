@@ -25,7 +25,7 @@ class antiVirus(commands.Cog):
             for i in range(len(buffer)):
                 if validators.url(buffer[i]):
 
-                    #checks to see if link is in databse of malicious urls
+                    #checks to see if link is in database of malicious urls
                     for x in range(len(badDB["malicious"])):
                         if badDB["malicious"][x] in buffer[i]:
                             try:
